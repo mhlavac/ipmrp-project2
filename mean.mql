@@ -1,0 +1,45 @@
+int start(){
+   string stav="0";
+   int perioda1=14;
+   int perioda2=40;
+   int prom1=iMA(NULL,0,perioda1,0,MODE_SMA,PRICE_MEDIAN,0);
+   int prom2=iMA(NULL,0,perioda2,0,MODE_SMA,PRICE_MEDIAN,0);
+  
+
+// nasledujúce riadky by bolo fajn dat do inicializácie (ak to bude reálne možné)  
+   if(prom1>prom2){
+      stav="AB";
+   }
+   if(prom1<prom2){
+      stav="BA";
+   }   
+   
+
+// test casu vstupu a vystupu (len v určitých časových intervaloch a dňoch v týždni sa budú vykonávať transakcie (okrem rozbehnutej transakcie - na toto treba dať bacha; takisto aj na konci dňa)
+
+
+   switch(stav){
+      case "0":
+      break;
+
+
+      case "AB":
+         if(TimeHour(iTime(Symbol(),PERIOD_M1,0)) == CAS_VSTUP){          // tu nebude vubec záležat na čase, len na pretnutí funkcií
+            if(iClose(Symbol(),PERIOD_D1,1)>iOpen(Symbol(),PERIOD_D1,1)){
+               prikaz01=OrderSend(Symbol(),OP_BUY,1,Ask,3,0,0);
+               stav="BA";
+            }
+         }
+      break;
+      
+      case "BA":
+         if(TimeHour(iTime(Symbol(),PERIOD_M1,0)) == CAS_VYSTUP){          // tu nebude vubec záležat na čase, len na pretnutí funkcií
+            OrderClose(prikaz01,1,Bid,3);
+            stav="AB";
+         }
+      
+      break;
+   }
+   
+   return(0);
+}
