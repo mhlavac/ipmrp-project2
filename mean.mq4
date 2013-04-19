@@ -12,7 +12,7 @@ extern int casVystup2 = 12;
 extern int casVstup3 = 14; 
 extern int casVystup3 = 17; 
 
-extern double lots = 1.0;   //velikost lotu
+extern double lots = 5.0;   //velikost lotu
 
 extern int lengthMA1 = 12;  //doba pro kterou se pocita klouzavy prumer
 extern int lengthMA2 = 34;
